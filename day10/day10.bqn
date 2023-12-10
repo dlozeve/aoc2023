@@ -16,8 +16,8 @@ path←⌽Advance⍟(n×m)start
 # Only takes into account the ones connecting above, because "FJ" is equivalent to a single "|"
 pathmask←1⊸+⌾(path⊸⊑) n‿m⥊0
 cleangrid←'.'˙¨⌾((¬pathmask)⊸(/○⥊))grid
-inmask←⍉(↕m){∨´2|+´¨∊⟜"JL|"¨𝕨(↑⋈↓)𝕩}⌜<˘cleangrid
-•Show +´⥊inmask∧¬pathmask
+inmask←(¬pathmask)∧⍉(↕m){∨´2|+´¨∊⟜"JL|"¨𝕨(↑⋈↓)𝕩}⌜<˘cleangrid
+•Show +´⥊inmask
 
 # Second method for part 2, using Pick's theorem and the shoelace formula
 # https://en.wikipedia.org/wiki/Pick%27s_theorem
@@ -28,3 +28,7 @@ a←|2÷˜-´+˝(⌽˘1⊸⌽)⊸×>path
 b←≠path
 # Pick's formula to compute the number of points inside the polygon
 •Show ⌈a+1-b÷2
+
+# Display the path
+ReplaceChars←⊑(=⟜"|-FJL7.S"/"┃━┏┛┗┓ █"˙)
+•Out ⥊∾⟜(@+10)˘ReplaceChars¨cleangrid
