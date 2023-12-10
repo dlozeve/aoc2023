@@ -29,6 +29,29 @@ b←≠path
 # Pick's formula to compute the number of points inside the polygon
 •Show ⌈a+1-b÷2
 
-# Display the path
-ReplaceChars←⊑(=⟜"|-FJL7.S"/"┃━┏┛┗┓ █"˙)
-•Out ⥊∾⟜(@+10)˘ReplaceChars¨cleangrid
+## Display the path in the terminal as Unicode box drawing characters
+# ReplaceChars←⊑(=⟜"|-FJL7.S"/"┃━┏┛┗┓ █"˙)
+# •Out ⥊∾⟜(@+10)˘ReplaceChars¨cleangrid
+
+## Generate an image of the path and its interior
+# ⟨PBM,PPM⟩←•Import"../../bqn-graphics/pnm.bqn"
+# pixels←3‿3⊸⥊¨⟨
+#   9⥊0‿1‿0,
+#   0‿0‿0‿1‿1‿1‿0‿0‿0,
+#   0‿0‿0‿0‿1‿1‿0‿1‿0,
+#   0‿1‿0‿1‿1‿0‿0‿0‿0,
+#   0‿1‿0‿0‿1‿1‿0‿0‿0,
+#   0‿0‿0‿1‿1‿0‿0‿1‿0,
+#   9⥊0,
+#   9⥊1,
+#   9⥊1,
+# ⟩
+# ReplaceCharsPixels←⊑(=⟜"|-FJL7.SI"/pixels˙)
+# •Out PBM ¬∾˝∾˘´˘ReplaceCharsPixels¨ 'I'˙¨⌾(inmask⊸(/○⥊)) cleangrid
+
+## With color representing the distance from the start
+# ⟨Inferno⟩←•Import"../../bqn-graphics/colormaps.bqn"
+# pixgrid←ReplaceCharsPixels¨cleangrid
+# coloroffset←1500
+# colors←⌊255×Inferno¨(coloroffset+2÷˜≠path)÷˜+´path{𝕩⊸+⌾(𝕨⊸⊑)n‿m⥊0}¨coloroffset+⌊˝(⌽≍⊢)↕≠path
+# •Out PPM >∾˝∾˘´˘colors{𝕨⊸×¨𝕩}¨pixgrid
